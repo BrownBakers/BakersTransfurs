@@ -1,4 +1,4 @@
-package net.kjentytek303.bakers_tranfurs;
+package net.brown_bakers.bakers_tranfurs;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
