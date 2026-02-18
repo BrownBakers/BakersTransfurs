@@ -1,6 +1,7 @@
 #Every line starting with a '#' is treated as a comment, and replaced with '\n' before evaluation.
 #Options specified are read from top to bottom, so bottom entries override top ones.
 #WARNING: Depending on the setting, trailing whitespace might break the generator.
+#Commenting out options will set them to default values, i.e. This file overrides a preset file, which overrides default values defined inside the compiler.
 
 #Specifies a stat preset for a transfur.
 #Valid values are the same as file titles inside ./utils/transfur-generator/presets.
@@ -10,14 +11,15 @@ CAT
 LATEX
 ]
 
-#Specifies the template to use.
-#Leave blank for a generic template
-TEMPLATE=
+#Specifies the .java template to use.
+#TEMPLATE=
 
 #Attribute overrides.
 #format is CLASSPATH:ARGUMENT
 #CLASSPATH.setBaseValue(ARGUMENT) instance method is called
 #This is so this generator can handle custom attributes and calls to methods from within the argument.
+#WARNING: THIS PART IS NOT FULLY COMPILE CHECKED.
+#THE COMPILER HAS NO IDEA IF THE CLASS PATH YOU GIVE HERE IS VALID.
 ATTRIBUTES=[
 net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH:24
 ]
@@ -33,7 +35,7 @@ TRANSFUR_MODE=ABSORBING
 
 #Overrides mining speed.
 #Valid values are WEAK, NORMAL, STRONG. Blank resolves to NORMAL
-MINING=
+MINING=NORMAL
 
 #Overrides the amount of legs a transfur has. This affects armor type it can use.
 #Valid values are 0, 2, 4 and '', which evaluates to 2.
@@ -68,7 +70,7 @@ JUMPS=4
 #Overrides default vision type.
 #Valid values are NORMAL, NIGHT_VISION, BLIND, REDUCED, WAVE_VISION
 #'' resolves to NORMAL
-VISION=
+VISION=NORMAL
 
 #Overrides if variant can climb.
 CLIMB=false
@@ -76,22 +78,29 @@ CLIMB=false
 #Overrides variant safe fall distance.
 SAFE_FALL_DIST=1.0
 
-#Overrides camera z-offest. Vanilla is 0.0
-#used for taurs.
+#Overrides camera z-offest. Vanilla is 0.0. Taurs have 0.4375
 Z_OFFSET=0.0
 
 #This will tell the compiler to generate a second variant with opposite gender
 #Warning: If you want different stats for the same transfur depending on gender (manta rays
-GENDERED=true
+GENDERED=false
 
-#Overrides how long it takes for the variant to freeze, in ticks. Leave empty for default.
-TICKS_TO_FREEZE=200
+#Overrides how long it takes for the variant to freeze, in ticks. Vanilla is 140
+TICKS_TO_FREEZE=240
 
 #Overrides if the variant has aqua affinity.
-AQUA_AFFINITY=true
+AQUA_AFFINITY=false
+
+#Overrides if the variant ca walk on powder snow
+POWDER_SNOW_WALKABLE=false
+
+#Overrides variant breathing mode
+#Valid values are AIR, WATER, ANY, NONE.
+BREATH=
 
 #Overrides latex type
 #Accepts class field paths
+#TODO
 
 #Overrides transfur colors
 #Accepts integers.
@@ -102,8 +111,6 @@ TRANSFUR_COLORS=0xffffff
 #Abilities
 #The way abilities are handled, is via class paths. So to add grab, you have to write net.ltxprogrammer.changed.ChangedAbilities.GRAB_ENTITY_ABILITY, or add an entry to the IMPORTS array.
 #Abilities are checked line by line, and the entire array is treated as one value. DO NOT add non-ability entries here.
-#WARNING: THIS PART IS NOT FULLY COMPILE CHECKED.
-#THE COMPILER HAS NO IDEA IF THE CLASS PATH YOU GIVE HERE IS VALID.
 #WARNING: Adding 2 abilities with the exact same ID will cause a compile error. However, if you use full class path, and then a class path with import, this will pass compile checks, potentially leading to game crashes. Avoid this.
 #Warning: Arrays, unlike variables, are additive, and you need to call CLEAR_<ARRAY-NAME>() to reset them. You must do it before first use of an array inside of a file, otherwise it becomes dead code.
 ABILITIES=[
@@ -134,11 +141,6 @@ EXTEND=
 #Redundant entries generate a compile error.
 SCARES=[
 net.minecraft.world.entity.monster.Creeper
-]
-
-#What accessory slots should the variant have?
-#Accepts classpaths.
-ACCESSORIES=[
 ]
 
 #The array of imports, that will be placed inside of the registering file, and inside generated transfur file.
