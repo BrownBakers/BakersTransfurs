@@ -14,6 +14,7 @@ my $VERSION = '0.1';
 my @files;
 my @prepared_files;
 my $should_crash;
+my $errored=0;
 getlopt(@ARGV);
 my $argc = scalar(@files);
 
@@ -77,12 +78,19 @@ foreach (@files) {
 	generateTransfur($_);
 }
 
-sub generateTransfur {
+sub generateTransfur { #{{{
 	my $mode = 'NORMAL';
-	open($VARIANT_FILE, "<", $_[0]);
+	my $array = "";
+	open(VARIANT_FILE, "<", $_[0]);
 	foreach(<VARIANT_FILE>) {
 		loop_begin:
-		if ($mode == 'NORMAL') { #{{{
+
+		if( /^#.*/ ) { #if comment {{{
+			next;
+		} #}}}
+
+		if ($mode eq 'NORMAL') { #{{{
+
 			if ( /^TEMPLATE=(.+)/ ) { #TODO
 	
 			}
@@ -201,13 +209,47 @@ sub generateTransfur {
 				next;
 			}# }}}
 	
-			}
-		} #}}}
-
-		if ( $mode == 'ARRAY' ) {
-
 		}
-	}
+		if ( $mode eq 'ARRAY' ) { # {{{
+
+			if ( $array eq '' ) { # if we drop from normal mode, get option {{{
+				$_ =~ /([A-Z]+)=\[\h*/;
+				$array = $1;
+				next;
+			} #}}}
+
+			if ( $array eq 'ABILITIES' ) {
+				#TODO
+				next;
+			}
+
+			if ( $array eq 'ATTRIBUTES' ) {
+				#TODO
+				next;
+			}
+
+			if ( $array eq 'SCARES' ) {
+				#TODO
+				next;
+			}
+			
+			if ( $array eq 'IMPORTS' ) {
+				#TODO
+				next;
+			}
+
+			if ( $_ =~ /^]\h*/ ) { #{{{
+				$array = '';
+				$mode = 'NORMAL';
+				next;
+			} # }}}
+			
+			print "Unknown array definition: \"$array\", field: \"$_\"";
+			$errored = 1;
+		} #}}}
+	} #}}}
+	close(VARIANT_FILE) 
+} #}}}
 
 
 sub resetValues { #{{{
