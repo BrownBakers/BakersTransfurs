@@ -67,7 +67,7 @@ my @final_imports;
 #if @files is empty, recompile all entries in ./variants
 if ($argc == 0)
 {
-	opendir(my $D, './variants') or die "Compilation Error: Can't open directory ./variants: $!.
+	opendir(my $D, './variants') or die "Error: Can't open directory ./variants: $!.
 Compilation aborted\n";
 	@files = readdir($D);
 	closedir($D);
@@ -91,17 +91,27 @@ sub generateTransfur { #{{{
 
 		if ($mode eq 'NORMAL') { #{{{
 
-			if ( /^TEMPLATE=(.+)/ ) { #TODO
-	
-			}
+			if ( /^TEMPLATE=(.+)/ ) { # {{{
+				if(-f "templates/$1") {
+					$template = $1
+				}
+				else {
+					$errored = 1;
+					print STDERR "Error: Template file $1 not found, in file $_[0]
+$_";
+				}
+
+				next;
+			} #}}}
 	
 			if ( /^[A-Z_]+-=\[\h*/ ) { #if array opening {{{
 				$mode ='ARRAY';
 				goto loop_begin; #reevaluate as array.
 			} # }}}
 	
-			if ( /^TRANSFUR_SOUND=(([a-z\._0-9])*.?([a-zA-Z0-9]+))/ ) {# {{{
-				#TODO
+			if ( /^TRANSFUR_SOUND=(.+)\h*/ ) {# unsafe {{{
+				$transfur_sound = $1;
+				next;
 			}# }}}
 	
 			if ( /^TRANSFUR_MODE=(ABSORBING|REPLICATING|NONE)\h*/ ) { #{{{
@@ -209,7 +219,8 @@ sub generateTransfur { #{{{
 				next;
 			}# }}}
 	
-		}
+		} #}}}
+
 		if ( $mode eq 'ARRAY' ) { # {{{
 
 			if ( $array eq '' ) { # if we drop from normal mode, get option {{{
@@ -218,25 +229,29 @@ sub generateTransfur { #{{{
 				next;
 			} #}}}
 
-			if ( $array eq 'ABILITIES' ) {
-				#TODO
+			if ( $array eq 'ABILITIES' ) { #{{{
+				$_ =~ /(.+)\h*/;
+				push( @abilities, $1 );
 				next;
-			}
+			} #}}}
 
-			if ( $array eq 'ATTRIBUTES' ) {
-				#TODO
+			if ( $array eq 'ATTRIBUTES' ) { #{{{
+				$_ =~ /(.+):(.+)\h*/;
+				$attributes{$1} = $2;
 				next;
-			}
+			} #}}}
 
-			if ( $array eq 'SCARES' ) {
-				#TODO
+			if ( $array eq 'SCARES' ) { #{{{
+				$_ =~ /(.+)\h*/;
+				push( @scares, $1 );
 				next;
-			}
+			} #}}}
 			
-			if ( $array eq 'IMPORTS' ) {
-				#TODO
+			if ( $array eq 'IMPORTS' ) { #{{{
+				$_ =~ /(.+)\h*/;
+				push( @imports, $1 );
 				next;
-			}
+			} #}}}
 
 			if ( $_ =~ /^]\h*/ ) { #{{{
 				$array = '';
@@ -246,11 +261,14 @@ sub generateTransfur { #{{{
 			
 			print "Unknown array definition: \"$array\", field: \"$_\"";
 			$errored = 1;
+			next;
 		} #}}}
+
+		$errored = 1;
+		die "Internal Compiler Error - bad mode: $array";
 	} #}}}
 	close(VARIANT_FILE) 
 } #}}}
-
 
 sub resetValues { #{{{
 	$template = "./templates/generic.java.template";		
