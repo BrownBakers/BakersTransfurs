@@ -1,4 +1,4 @@
-package net.brown_bakers.bakers_tranfurs;
+package net.brown_bakers.bakers_transfurs;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
