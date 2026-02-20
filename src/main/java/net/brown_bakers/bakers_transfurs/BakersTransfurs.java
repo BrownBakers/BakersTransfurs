@@ -1,5 +1,6 @@
 package net.brown_bakers.bakers_transfurs;
 
+import net.brown_bakers.bakers_transfurs.init.BakersTransfursEntities;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -29,6 +30,8 @@ public class BakersTransfurs
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        BakersTransfursEntities.REGISTRY.register(modEventBus);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event)
