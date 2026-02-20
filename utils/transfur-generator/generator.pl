@@ -15,6 +15,7 @@ my @files;
 my @prepared_files;
 my $should_crash;
 my $errored=0;
+my $force_regen=0;
 getlopt(@ARGV);
 my $argc = scalar(@files);
 
@@ -65,7 +66,7 @@ my @final_imports;
 #main
 
 #if @files is empty, recompile all entries in ./variants
-if ($argc == 0)
+if ($argc == 0 || $force_regen == 1)
 {
 	opendir(my $D, './variants') or die "Error: Can't open directory ./variants: $!.
 Compilation aborted\n";
@@ -300,6 +301,7 @@ sub resetValues { #{{{
 	$freezing_ticks = "";	
 	$breathing_mode = "";
 	$aqua_affinity = "";
+	$powder_snow_walkable = "";
 	$transfur_colors = "";
 #	$latex_faction = "";
 
@@ -317,11 +319,15 @@ sub getlopt { #{{{
 			print $VERSION;
 			exit(0);
 		}
+		if ($_ =~ /^--force-regen$/) {
+			$force_regen = 1;
+			next;
+		}
 		if ($_ =~ /^--crash$/) {
 			$should_crash = 1;
 			next;
 		}
-		if ($_ =~ /^-[hcV]+$/) {
+		if ($_ =~ /^-[hcVf]+$/) {
 			getsopt($_);
 			next;
 		}
@@ -343,6 +349,9 @@ sub getsopt { #{{{
 	if ($_ =~ /c/) {
 		$should_crash = 1;
 	}
+	if ($_ =~ /f/) {
+		$force_regen = 1;
+	}
 } #}}}
 
 sub printHelp { #{{{
@@ -359,6 +368,7 @@ OPTIONS:
  -h	--help		- Displays this message
  -c	--crash 	- Crashes on error
  -V	--version	- Prints version
+ -f	--full-regen	- Force regenerates all entries. Ingores all FILEs. Useful to regenerate registriers, instead of appending to them.
 ";
 } #}}}
 
