@@ -96,7 +96,7 @@ POWDER_SNOW_WALKABLE=false
 
 #Overrides variant breathing mode
 #Valid values are AIR, WATER, ANY, NONE.
-BREATH=
+BREATH=AIR
 
 #Overrides latex type
 #Accepts class field paths
@@ -104,32 +104,24 @@ BREATH=
 
 #Overrides transfur colors
 #Accepts integers.
-#Leave blank for 0xffffff
+#Defaults to 0xf0f0f0
 TRANSFUR_COLORS=0xffffff
 
+#Overrides ability colors. Accepts hex values only 
+ABILITY_COLOR_1ST=0xff0000
+ABILITY_COLOR_2ND=0xffff00
 
 #Abilities
-#The way abilities are handled, is via class paths. So to add grab, you have to write net.ltxprogrammer.changed.ChangedAbilities.GRAB_ENTITY_ABILITY, or add an entry to the IMPORTS array.
-#Abilities are checked line by line, and the entire array is treated as one value. DO NOT add non-ability entries here.
-#WARNING: Adding 2 abilities with the exact same ID will cause a compile error. However, if you use full class path, and then a class path with import, this will pass compile checks, potentially leading to game crashes. Avoid this.
+#WARNING: Adding 2 abilities with the exact same ID will cause a compile error.
 #Warning: Arrays, unlike variables, are additive, and you need to call CLEAR_<ARRAY-NAME>() to reset them. You must do it before first use of an array inside of a file, otherwise it becomes dead code.
 ABILITIES=[
-
 net.ltxprogrammer.changed.ChangedAbilities.SWITCH_TRANSFUR_MODE
-
-#We can add an import statement in the file, so we don't have to write a full class path.
-
-ChangedAbilities.GRAB_ENTITY_ABILITY
-ChangedAbilities.TOGGLE_NIGHT_VISION
-
+net.ltxprogrammer.changed.ChangedAbilities.GRAB_ENTITY_ABILITY
+net.ltxprogrammer.changed.ChangedAbilities.TOGGLE_NIGHT_VISION
 ]
 
 #Specifies what class should be extended. Accepts classpaths
-#Leave empty for ChangedEntity.
 EXTEND=
-
-#Specifies interfaces that should be implemented. Accepts class paths.
-#Leave empty or force clear for none.
 
 #Force a function call to clear preset arrays.
 #This might be useful if you want to use a cat preset, without making creepers run away.
@@ -143,8 +135,32 @@ SCARES=[
 net.minecraft.world.entity.monster.Creeper
 ]
 
-#The array of imports, that will be placed inside of the registering file, and inside generated transfur file.
-#Similar to ability imports, putting redundant imports will cause a compile error.
-IMPORTS=[
-net.ltxprogrammer.changed.ChangedAbilities
+#Renderer type. Accepted values: PARTIAL_TF, HUMANOID
+RENDERER_TYPE=HUMANOID
+
+#Dimensions where the entity can spawn. Accepts classpaths.
+SPAWN_DIMENSIONS=[
+net.minecraft.world.level.Level.OVERWORLD
 ]
+
+#Biomes, where the entity can spawn. Accepts classpaths.
+#TODO
+
+#ENTITY SPAWN RULES ARE DEFINED INSIDE A TEMPLATE FILE OR BY USING DERIVE
+
+#net.minecraft.world.entity.EntityType.Builder argument, REQUIRED. Not checked at compile time. Defines entity size and other stuff.
+#valid options:
+#classpath
+#/*PERL_DEFAULT_CHANGED_BUILDER*/
+#/*PERL_CENTAUR_CHANGED_BUILDER*/
+#/*PERL_SHARK_CHANGED_BUILDER*/
+#/*PERL_BUFFSHARK_CHANGED_BUILDER*/
+#/*PERL_CROCKODILE_CHANGED_BUILDER*/
+#/*PERL_SQUOG_CHANGED_BUILDER*/
+#/*PERL_MERMAID_CHANGED_BUILDER*/
+#/*PERL_SNAKE_CHANGED_BUILDER*/
+#/*PERL_ORGANIC_CHANGED_BUILDER*/
+#/*PERL_HUMAN_CHANGED_BUILDER*/
+#/*PERL_PUP_CHANGED_BUILDER*/
+#/*PERL_PUDDING_CHANGED_BUILDER*/
+BUILDER=net.minecraft.world.entity.EntityType.Builder.of(net.ltxprogrammer.changed.entity.beast.CrystalWolf::new, net.minecraft.world.entity.MobCategory.CREATURE).clientTrackingRange(10).sized(0.7F, 1.93F)
