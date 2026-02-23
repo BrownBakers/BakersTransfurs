@@ -14,16 +14,14 @@ public class /*PERL_ENTITY_CLASS_NAME*/ extends /*PERL_EXTEND*/ /*PERL_IMPLEMENT
     @Override
     protected void setAttributes(AttributeMap attributes) {
         super.setAttributes(attributes);
-        /*PERL_ATTRIBUTE_OVERRIDE*/
+        /*PERL_ATTRIBUTES*/
     }
 
-    @Override
-    public LatexType getLatexType() {
-        return LatexType./*PERL_LATEX_TYPE*/;
-    }
+    /*PERL_TRANSFUR_MODE*/
 
-    @Override
-    public TransfurMode getTransfurMode() {
-        return TransfurMode./*PERL_TRANSFUR_MODE*/;
-    }
+    /*PERL_ENTITY_SHAPE*/
+
+    
+    
+    
 }

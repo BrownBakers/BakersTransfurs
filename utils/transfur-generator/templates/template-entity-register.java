@@ -8,5 +8,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BakersTransfursEntities {
     public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, BakersTransfurs.MODID);
 
+    
     /*PERL_REGISTER_ENTITIES*/
+    
 }

@@ -77,7 +77,21 @@ Compilation aborted\n";
 
 foreach (@files) {
 	generateTransfur($_);
+	write_temporary_file();
+	resetValues();
 }
+
+write_registries();
+write_transfurs();
+wipe_tmp();
+
+# functions {{{
+
+sub write_registries { #{{{
+} #}}}
+
+sub write_transfurs { #{{{
+} #}}}
 
 sub generateTransfur { #{{{
 	my $mode = 'NORMAL';
@@ -224,6 +238,12 @@ $_";
 
 		if ( $mode eq 'ARRAY' ) { # {{{
 
+			if ( $_ =~ /^]\h*/ ) { #{{{
+				$array = '';
+				$mode = 'NORMAL';
+				next;
+			} # }}}
+
 			if ( $array eq '' ) { # if we drop from normal mode, get option {{{
 				$_ =~ /([A-Z]+)=\[\h*/;
 				$array = $1;
@@ -254,12 +274,6 @@ $_";
 				next;
 			} #}}}
 
-			if ( $_ =~ /^]\h*/ ) { #{{{
-				$array = '';
-				$mode = 'NORMAL';
-				next;
-			} # }}}
-			
 			print "Unknown array definition: \"$array\", field: \"$_\"";
 			$errored = 1;
 			next;
@@ -267,8 +281,8 @@ $_";
 
 		$errored = 1;
 		die "Internal Compiler Error - bad mode: $array";
-	} #}}}
-	close(VARIANT_FILE) 
+	}
+	close(VARIANT_FILE);
 } #}}}
 
 sub resetValues { #{{{
@@ -306,7 +320,6 @@ sub resetValues { #{{{
 #	$latex_faction = "";
 
 } #}}}
-
 
 #Getopt and stuff {{{
 sub getlopt { #{{{
@@ -372,4 +385,8 @@ OPTIONS:
 ";
 } #}}}
 
+#}}}
+# }}}
+
+# macros {{{
 #}}}
