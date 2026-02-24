@@ -1,0 +1,29 @@
+;All lines starting with a semi-colon are comments
+;this was implemented, due to problems related to lack of comments in json files.
+;By default, this file is located in ./data/example_namespace/tags/example_tag_group/
+;For your tags, replace these with appropriate values, such as
+;./data/minecraft/tags/item/planks.mctag, for adding entries to minecraft tag.
+;standard rules of adding tags apply. Learn about them on minecraft.wiki.
+
+;a few example entries
+minecraft:apple
+example_mod:magic_wand
+minecraft:stick
+#minecraft:planks
+
+;but what if you want to add an item that's not guaranteed to be in game?
+;In case of optional mod dependency, you should add "false" after an entry.
+;Warning: this disables minecraft runtime tag validity checks.
+;Do not use unless you kknow that an item is not guaranteed to exist.
+;It generates an equivelent of namespace:item { "required:false" }
+
+othermod:magic_shotgun false
+different_mod:summon_gun_item false
+
+;The generator performs compile-time checks for simple tag validity.
+;if an error is detected, the tag is not overwritten.
+;uncomment the next line to see them.
+;ęxample_mod:broken_entry
+;example_mod:another broken entry
+;minecraft:
+;:craftmine
