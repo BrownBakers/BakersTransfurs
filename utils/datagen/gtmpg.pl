@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-#GregTech Masohist's Perl Generator /j
+#GregTech Masochist's Perl Generator /j
 use warnings;
 use strict;
 scanDirectory("data");

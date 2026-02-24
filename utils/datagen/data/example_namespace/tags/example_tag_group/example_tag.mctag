@@ -14,8 +14,8 @@ minecraft:stick
 ;but what if you want to add an item that's not guaranteed to be in game?
 ;In case of optional mod dependency, you should add "false" after an entry.
 ;Warning: this disables minecraft runtime tag validity checks.
-;Do not use unless you kknow that an item is not guaranteed to exist.
-;It generates an equivelent of namespace:item { "required:false" }
+;Do not use unless you know that an item is not guaranteed to exist.
+;It generates an equivalent of namespace:item { "required:false" }
 
 othermod:magic_shotgun false
 different_mod:summon_gun_item false
