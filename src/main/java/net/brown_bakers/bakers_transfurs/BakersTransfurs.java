@@ -1,5 +1,6 @@
 package net.brown_bakers.bakers_transfurs;
 
+import net.brown_bakers.bakers_transfurs.init.InitEntities;
 import net.brown_bakers.bakers_transfurs.init.InitTransfurs;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -23,15 +24,18 @@ public class BakersTransfurs
         IEventBus modEventBus = context.getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
-
+        
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-
+        
+        InitEntities.ENTITY_REGISTRY.register(modEventBus);
         InitTransfurs.TF_REGISTRY.register(modEventBus);
     }
     
     private void commonSetup(final FMLCommonSetupEvent event)
-    {}
+    {
+    
+    }
     
     
     public static ResourceLocation modResource(String path) {
