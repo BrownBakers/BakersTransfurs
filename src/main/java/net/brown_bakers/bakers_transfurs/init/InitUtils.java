@@ -3,7 +3,6 @@ package net.brown_bakers.bakers_transfurs.init;
 import com.mojang.datafixers.util.Pair;
 import net.brown_bakers.bakers_transfurs.BakersTransfurs;
 import net.ltxprogrammer.changed.entity.ChangedEntity;
-import net.ltxprogrammer.changed.entity.UseItemMode;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;

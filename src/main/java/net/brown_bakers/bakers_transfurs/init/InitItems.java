@@ -13,6 +13,5 @@ import java.util.HashMap;
 public class InitItems
 {
 	public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, BakersTransfurs.MODID);
-	
-	public static final HashMap<RegistryObject<? extends EntityType>, RegistryObject<ForgeSpawnEggItem> > SPAWN_EGGS = new HashMap<>();
+	public static final HashMap<RegistryObject<? extends EntityType<?>>, RegistryObject<ForgeSpawnEggItem> > SPAWN_EGGS = new HashMap<>();
 }
