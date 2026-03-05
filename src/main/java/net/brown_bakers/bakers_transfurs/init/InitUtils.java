@@ -23,7 +23,7 @@ import static net.brown_bakers.bakers_transfurs.init.InitItems.SPAWN_EGGS;
 
 public class InitUtils
 {
-	public static <T extends ChangedEntity> RegistryObject<EntityType<T>> getInitRObject(String name, int eggBack, int eggHighlight, EntityType.Builder<T> builder, @Nullable Predicate<Level> dimension, @Nullable SpawnPlacements.Type spawnType, @Nullable SpawnPlacements.SpawnPredicate<T> spawnPredicate, Supplier<AttributeSupplier.Builder> attributes) {
+	public static <T extends ChangedEntity> RegistryObject<EntityType<T>> getEntityInitRObject(String name, int eggBack, int eggHighlight, EntityType.Builder<T> builder, @Nullable Predicate<Level> dimension, @Nullable SpawnPlacements.Type spawnType, @Nullable SpawnPlacements.SpawnPredicate<T> spawnPredicate, Supplier<AttributeSupplier.Builder> attributes) {
 		ENTITY_COLORS.put(name, new Pair<>(eggBack, eggHighlight));
 		String regName = BakersTransfurs.modResource(name).toString();
 		RegistryObject<EntityType<T>> entityType = ENTITY_REGISTRY.register(name, () -> builder.build(regName));
