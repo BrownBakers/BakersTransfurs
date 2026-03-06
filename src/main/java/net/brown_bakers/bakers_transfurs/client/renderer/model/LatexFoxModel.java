@@ -1,5 +1,7 @@
 package net.brown_bakers.bakers_transfurs.client.renderer.model;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.brown_bakers.bakers_transfurs.BakersTransfurs;
 import net.brown_bakers.bakers_transfurs.entity.LatexFox;
 import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
@@ -172,6 +174,16 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(0, 40).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 1.5F, 0.0F));
 
 		return LayerDefinition.create( meshdefinition, 96, 96);
+	}
+	
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 }
