@@ -1,5 +1,6 @@
 RUN_TAG=true
 COPY=false
+RUN_MODEL=true
 
 while true; do
   case "$1" in
