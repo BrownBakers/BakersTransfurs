@@ -1,51 +1,12 @@
-package net.brown_bakers.bakers_transfurs.client.renderer.model;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.brown_bakers.bakers_transfurs.BakersTransfurs;
-import net.brown_bakers.bakers_transfurs.entity.LatexCheetahMale;
-import net.ltxprogrammer.changed.client.renderer.animate.AnimatorPresets;
-import net.ltxprogrammer.changed.client.renderer.animate.HumanoidAnimator;
-import net.ltxprogrammer.changed.client.renderer.model.AdvancedHumanoidModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.HumanoidArm;
-
-import java.util.List;
 // Made with Blockbench 5.0.5
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
 
-public class LatexCheetahMaleModel extends AdvancedHumanoidModel<LatexCheetahMale> {
-	@Override
-	public HumanoidAnimator<LatexCheetahMale, ?> getAnimator(LatexCheetahMale entity) { return animator; }
-	
-	@Override
-	public ModelPart getArm(HumanoidArm humanoidArm) { return humanoidArm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm; }
-	
-	@Override
-	public ModelPart getLeg(HumanoidArm humanoidArm) { return humanoidArm == HumanoidArm.LEFT ? this.LeftLeg : this.RightLeg; }
-	
-	@Override
-	public ModelPart getTorso() { return this.Torso; }
-	
-	@Override
-	public ModelPart getHead() { return this.Head; }
-	
+public class LatexCheetahMale<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BakersTransfurs.modResource("entity/latex_cheetah_male"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "latexcheetahmale"), "main");
 	private final ModelPart RightLeg;
-	private final HumanoidAnimator<LatexCheetahMale, LatexCheetahMaleModel> animator;
-
-//	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BakersTransfurs.modResource("entity/latex_cheetah_male"), "main");
-
 	private final ModelPart RightLowerLeg;
 	private final ModelPart RightFoot;
 	private final ModelPart RightPad;
@@ -66,8 +27,7 @@ public class LatexCheetahMaleModel extends AdvancedHumanoidModel<LatexCheetahMal
 	private final ModelPart RightArm;
 	private final ModelPart LeftArm;
 
-		public LatexCheetahMaleModel (ModelPart root) {
-		super(root);
+	public LatexCheetahMale(ModelPart root) {
 		this.RightLeg = root.getChild("RightLeg");
 		this.RightLowerLeg = this.RightLeg.getChild("RightLowerLeg");
 		this.RightFoot = this.RightLowerLeg.getChild("RightFoot");
@@ -88,13 +48,6 @@ public class LatexCheetahMaleModel extends AdvancedHumanoidModel<LatexCheetahMal
 		this.TailQuaternary = this.TailTertiary.getChild("TailQuaternary");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
-			   .addPreset(AnimatorPresets.catLike(
-					 Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
-					 Torso, LeftArm, RightArm,
-					 Tail, List.of(this.TailPrimary, TailSecondary, TailTertiary, TailQuaternary),
-					 LeftLeg, LeftLowerLeg, LeftFoot, LeftFoot.getChild("LeftPad"), RightLeg, RightLowerLeg, RightFoot, RightFoot.getChild("RightPad")));
-
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -173,6 +126,10 @@ public class LatexCheetahMaleModel extends AdvancedHumanoidModel<LatexCheetahMal
 		return LayerDefinition.create(meshdefinition, 96, 96);
 	}
 
+	@Override
+	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

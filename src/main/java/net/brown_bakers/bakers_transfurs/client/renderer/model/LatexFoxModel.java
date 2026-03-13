@@ -18,13 +18,14 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.HumanoidArm;
 
 import java.util.List;
+// Made with Blockbench 5.0.5
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
+
 
 public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 	@Override
-	public HumanoidAnimator<LatexFox, ?> getAnimator(LatexFox latexFox)
-	{
-		return animator;
-	}
+	public HumanoidAnimator<LatexFox, ?> getAnimator(LatexFox entity) { return animator; }
 	
 	@Override
 	public ModelPart getArm(HumanoidArm humanoidArm) { return humanoidArm == HumanoidArm.LEFT ? this.LeftArm : this.RightArm; }
@@ -41,6 +42,10 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BakersTransfurs.modResource("entity/latex_fox"), "main");
 	private final ModelPart RightLeg;
+	private final HumanoidAnimator<LatexFox, LatexFoxModel> animator;
+
+//	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BakersTransfurs.modResource("entity/latex_fox"), "main");
+
 	private final ModelPart RightLowerLeg;
 	private final ModelPart RightFoot;
 	private final ModelPart RightPad;
@@ -61,9 +66,8 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 	private final ModelPart TailTertiary;
 	private final ModelPart RightArm;
 	private final ModelPart LeftArm;
-	private final HumanoidAnimator<LatexFox, LatexFoxModel> animator;
 
-	public LatexFoxModel(ModelPart root) {
+		public LatexFoxModel (ModelPart root) {
 		super(root);
 		this.RightLeg = root.getChild("RightLeg");
 		this.RightLowerLeg = this.RightLeg.getChild("RightLowerLeg");
@@ -86,13 +90,13 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 		this.TailTertiary = this.TailSecondary.getChild("TailTertiary");
 		this.RightArm = root.getChild("RightArm");
 		this.LeftArm = root.getChild("LeftArm");
-		
 		animator = HumanoidAnimator.of(this).hipOffset(-1.5f)
 			   .addPreset(AnimatorPresets.wolfLike(
 					 Head, Head.getChild("LeftEar"), Head.getChild("RightEar"),
 					 Torso, LeftArm, RightArm,
 					 Tail, List.of(this.TailPrimary, TailSecondary, TailTertiary),
 					 LeftLeg, LeftLowerLeg, LeftFoot, LeftFoot.getChild("LeftPad"), RightLeg, RightLowerLeg, RightFoot, RightFoot.getChild("RightPad")));
+
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -174,17 +178,17 @@ public class LatexFoxModel extends AdvancedHumanoidModel<LatexFox> {
 
 		PartDefinition LeftArm = partdefinition.addOrReplaceChild("LeftArm", CubeListBuilder.create().texOffs(0, 40).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 1.5F, 0.0F));
 
-		return LayerDefinition.create( meshdefinition, 96, 96);
-	}
-	
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		RightLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		LeftLeg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		Head.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		Torso.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		RightArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-		LeftArm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		return LayerDefinition.create(meshdefinition, 96, 96);
 	}
 
+
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		RightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		LeftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		Torso.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		RightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		LeftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 }
