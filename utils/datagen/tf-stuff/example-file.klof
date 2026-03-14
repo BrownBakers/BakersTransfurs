@@ -3,6 +3,9 @@
 #WARNING: Depending on the setting, trailing whitespace might break the generator.
 #Commenting out options will set them to default values, i.e. This file overrides a preset file, which overrides default values defined inside the compiler.
 
+#Specifies the .java template to use.
+#TEMPLATE=
+
 #Specifies a stat preset for a transfur.
 #Valid values are the same as file titles inside ./utils/transfur-generator/presets.
 #Warning: If a preset sets for example: 'BREATH=WEAK', then writing 'BREATH=NORMAL' will override it to vanilla.
@@ -11,8 +14,6 @@ CAT
 LATEX
 ]
 
-#Specifies the .java template to use.
-#TEMPLATE=
 
 #Attribute overrides.
 #format is CLASSPATH:ARGUMENT
@@ -64,9 +65,6 @@ VISION=NORMAL
 
 #Overrides if variant can climb.
 CLIMB=false
-
-#Overrides variant safe fall distance.
-SAFE_FALL_DIST=1.0
 
 #Overrides camera z-offest. Vanilla is 0.0. Taurs have 0.4375
 Z_OFFSET=0.0
@@ -131,10 +129,15 @@ SPAWN_DIMENSIONS=[
 net.minecraft.world.level.Level.OVERWORLD
 ]
 
-#Biomes, where the entity can spawn. Accepts classpaths.
-#TODO
+#Tag template to use when checking spawn biomes.
+BIOMES=
 
-#ENTITY SPAWN RULES ARE DEFINED INSIDE A TEMPLATE FILE OR BY USING DERIVE
+#Pack spawns
+MIN_SPAWN=1
+MAX_SPAWN=3
+SPAWN_WEIGHT=5
+
+#ENTITY SPAWN RULES ARE DEFINED INSIDE A TEMPLATE FILE OR BY USING INHERITENCE
 
 #Renderer type. Accepted values: PARTIAL_TF, HUMANOID
 RENDERER_TYPE=HUMANOID

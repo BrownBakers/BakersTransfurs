@@ -5,7 +5,7 @@ use strict;
 
 
 #global variables
-my $PACKAGE_PATH = '../../src/main/java/net/brown_bakers/bakers_transfurs/entity/generated';
+my $PACKAGE_PATH = '../../src/main/java/net/brown_bakers/bakers_transfurs/entity';
 my $VERSION = '0.1';
 
 
@@ -13,7 +13,7 @@ my $VERSION = '0.1';
 
 my @files;
 my @prepared_files;
-my $should_crash;
+my $should_crash=0;
 my $errored=0;
 my $force_regen=0;
 getlopt(@ARGV);
@@ -27,35 +27,53 @@ my $argc = scalar(@files);
 my $template = "./templates/generic.java.template";		#template file
 my $extend = "net.ltxprogrammer.changed.entity.ChangedEntity";	#which class to extend
 
-my @presets;
-my %attributes;
-my @abilities;
-my @scares;			#what mobs fear the variant
-my @imports;			#java class imports
+my @presets=();
+my @attributes=();
+my @abilities=();
+my @scares=( );			#what mobs fear the variant
 
-my $transfur_sound;		#sound a variant makes when transfurring
-my $transfur_mode;		#default tf mode
-my $mining_speed;
+my $transfur_sound="";		#sound a variant makes when transfurring
+my $transfur_mode="";		#default tf mode
+my $mining_speed="";
 #my $legs;			#amount of legs
-my $entity_shape;		#entity shape enum. Assumes changed namespace, and is a subject to change
-my $use_item_mode
-my $fly;
-my $jumps;			#jump charges
-my $vision;			#default vision type
-my $climb;			#stiger climb
-my $safe_fall;			#safe fall distance multiplier
-my $z_offset;			#camera z-offset used for taurs
-my $gendered;			#this switches the script from generating 1 file, to generating 3.
-my $freezing_ticks;		#powder snow
-my $breathing_mode;
-my $aqua_affinity;
-my $powder_snow_walkable;
-my $transfur_colors;
-#my $latex_faction;		#DL/WL swimming and cover slowdown
-my $VARIANT_FILE;		#FILE* to a variant
+my $entity_shape="";		#entity shape enum. Assumes changed namespace, and is a subject to change
+my $use_item_mode="";
+my $fly="";
+my $jumps="";			#jump charges
+my $vision="";			#default vision type
+my $climb="";			#stiger climb
+my $z_offset="";		#camera z-offset used for taurs
+my $gendered="";			#this switches the script from generating 1 file, to generating 3.
+my $freezing_ticks="";		#powder snow
+my $breathing_mode="";
+my $aqua_affinity="";
+my $powder_snow_walkable="";
+my $transfur_color="";
+my $egg_back="";
+my $egg_front="";
+my @spawn_dimensions="net.minecraft.world.level.Level.OVERWORLD";
+my $spawn_template="";
+my $min_spawn=1;
+my $max_spawn=3;
+my $spawn_weight=5;
+
+my $renderer_type="HUMANOID";
+my $armor_type="net.ltxprogrammer.changed.client.renderer.model.armor.ArmorLatexMaleWolfModel";
+my $iris_present=1;
+my $iris_1st_color="";
+my $iris_2nd_color="";
+my $sclera_color="";
+
+my $gas_mask_layer="net.ltxprogrammer.changed.client.renderer.layers.GasMaskLayer.forSnouted";
+my $emmisive=0;
+my $animation_preset=wolf;
+my $model_scale="1.0";
+
+my $builder="net.minecraft.world.entity.EntityType.Builder.of(/*PERL_VARIANT_NAME*/::new, net.minecraft.world.entity.MobCategory.MONSTER).clientTrackingRange(10).sized(0.7, 1.93)";
+
+my $VARIANT_FILE="";		#FILE* to a variant
 
 my @registered_transfurs;
-my @final_imports;
 	
 #}}}
 
@@ -102,6 +120,11 @@ sub generateTransfur { #{{{
 
 		if ($mode eq 'NORMAL') { #{{{
 
+			if ( /^[A-Z_]+-=\[\h*/ ) { #if array opening {{{
+$mode ='ARRAY';
+				goto loop_begin; #reevaluate as array.
+			} # }}}
+	
 			if ( /^TEMPLATE=(.+)/ ) { # {{{
 				if(-f "templates/$1") {
 					$template = $1
@@ -114,12 +137,12 @@ $_";
 
 				next;
 			} #}}}
-	
-			if ( /^[A-Z_]+-=\[\h*/ ) { #if array opening {{{
-				$mode ='ARRAY';
-				goto loop_begin; #reevaluate as array.
-			} # }}}
-	
+
+			if ( $_ =~ /^EXTEND=([a-zA-Z0-9])+\h*/ ) {# {{{
+				$extend = $1;
+				next;
+			}# }}}
+
 			if ( /^TRANSFUR_SOUND=(.+)\h*/ ) {# unsafe {{{
 				$transfur_sound = $1;
 				next;
@@ -135,11 +158,6 @@ $_";
 				next;
 			} #}}}
 	
-			if ( /^LEGS=(0|2|4)\h*/ ) { #{{{
-				$legs = $1; 
-				next;
-			} #}}}
-	
 			if ( /^ENTITY_SHAPE=(ANTRO|FERAL|TAUR|NAGA|MER)\h*/ ) { #{{{
 				$entity_shape = $1;
 				next;
@@ -150,22 +168,7 @@ $_";
 				next;
 			} #}}}
 	
-			if ( /^ITEMS_IN_MAIN_HAND=(true|false)\h*/ ) { #{{{
-				$items_in_main_hand = $1;
-				next;
-			} #}}}
-	
-			if ( /^ITEMS_IN_OFF_HAND=(true|false)\h*/ ) { #{{{
-				$items_in_offhand = $1;
-				next;
-			} #}}}
-	
-			if ( /^BLOCK_INTERACTION=(true|false)\h*/ ) { #{{{
-				$block_interaction = $1;
-				next;
-			} #}}}
-	
-			if ( /^BLOCK_BREAKING=(true|false)\h*/ ) { #{{{
+			if ( /^USE_ITEM_MODE=(NORMAL|MOUTH|NONE)\h*/ ) { #{{{
 				$block_breaking = $1;
 				next;
 			} #}}}
@@ -189,11 +192,6 @@ $_";
 				$climb = $1;
 				next;
 			} #}}}
-	
-			if ( /^SAFE_FALL_DIST=(\d+\.\d+)\h*/ ) {# {{{
-				$safe_fall = $1;
-				next;
-			}# }}}
 	
 			if ( /^Z_OFFSET=(\d+\.\d+)\h*/ ) {# {{{
 				$z_offset = $1;
@@ -229,7 +227,38 @@ $_";
 				$transfur_colors = $1;
 				next;
 			}# }}}
+
+			if ( /^ABILITY_COLOR_1ST=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+				$egg_back = $1;
+				next;
+			}# }}}
+
+			if ( /^ABILITY_COLOR_2ND=(0x[0-9a-fA-F]{,6})\h*/ ) {# {{{
+				$egg_front = $1;
+				next;
+			}# }}}
+
+		if ( $_ =~ /^BIOMES=((^#?[a-z][a-z0-9_]*:[a-z][a-z0-9_\/]*)\h*$ )/ ) {{{{
+			$spawn_template=$1;
+			next;
+		}# }}}
+
+		if ( $_ =~ /^MIN_SPAWN=(\d+)/ ) {# {{{
+			$min_spawn = $1;
+			next;
+		}# }}}
 	
+		if ( $_ =~ /^MAX_SPAWN=(\d+)/ ) {# {{{
+			$max_spawn = $1;
+			next;
+		}# }}}
+
+		if ( $_ =~ /^SPAWN_WEIGHT=(\d+)/ ) {# {{{
+			$spawn_weight = $1;
+			next;
+		}# }}}
+
+		
 		} #}}}
 
 		if ( $mode eq 'ARRAY' ) { # {{{
@@ -243,6 +272,12 @@ $_";
 			if ( $array eq '' ) { # if we drop from normal mode, get option {{{
 				$_ =~ /([A-Z]+)=\[\h*/;
 				$array = $1;
+				next;
+			} #}}}
+
+			if ( $array eq 'PRESETS' ) { #{{{
+				$_ =~ /(.+)\h*/;
+				push( @presets, $1 );
 				next;
 			} #}}}
 
@@ -264,11 +299,13 @@ $_";
 				next;
 			} #}}}
 			
-			if ( $array eq 'IMPORTS' ) { #{{{
+			if ( $array eq 'SPAWN_DIMENSIONS' ) { #{{{
 				$_ =~ /(.+)\h*/;
-				push( @imports, $1 );
+				push( @scares, $1 );
 				next;
 			} #}}}
+			
+
 
 			print "Unknown array definition: \"$array\", field: \"$_\"";
 			$errored = 1;
