@@ -1,8 +1,6 @@
 package net.kjentytek303.additional_transfurs.init;
 
- import net.kjentytek303.additional_transfurs.client.renderer.model.AvaliModel;
- import net.kjentytek303.additional_transfurs.client.renderer.model.LatexFoxModel;
-
+ /*PERL_MODEL_IMPORTS*/
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,8 +12,6 @@ public class InitLayerDefinitions {
 	@SubscribeEvent
 	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 
-		event.registerLayerDefinition(AvaliModel.LAYER_LOCATION, AvaliModel::createBodyLayer);
- 		event.registerLayerDefinition(LatexFoxModel.LAYER_LOCATION, LatexFoxModel::createBodyLayer);
-
+/*PERL_LAYER_DEFINITIONS*/
 	}
 }

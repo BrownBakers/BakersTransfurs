@@ -4,9 +4,7 @@ import com.mojang.datafixers.util.Pair;
 
 import net.kjentytek303.additional_transfurs.AdditionalTransfurs;
 
- import net.kjentytek303.additional_transfurs.entity.Avali;
- import net.kjentytek303.additional_transfurs.entity.LatexFox;
-
+ /*PERL_ENTITY_IMPORTS*/
 
 import net.ltxprogrammer.changed.entity.ChangedEntity;
 import net.ltxprogrammer.changed.init.ChangedEntities;
@@ -41,9 +39,7 @@ public class InitEntities
 	public static final List<Pair<Supplier<EntityType<? extends ChangedEntity>>, Supplier<AttributeSupplier.Builder>>> INIT_ATTRIBS = new ArrayList<>();
 	public static final Map<Supplier<? extends EntityType<?>>, Predicate<Level>> DIMENSION_RESTRICTIONS = new HashMap<>();
 	
-	public static final RegistryObject<EntityType<Avali>> AVALI = Avali.getEntityInitRObject();
- 	public static final RegistryObject<EntityType<LatexFox>> LATEX_FOX = LatexFox.getEntityInitRObject();
-
+/*PERL_ENTITIES*/
 	
 	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent event) {

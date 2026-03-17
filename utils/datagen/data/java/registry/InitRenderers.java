@@ -1,8 +1,6 @@
 package net.kjentytek303.additional_transfurs.init;
 
- import net.kjentytek303.additional_transfurs.client.renderer.AvaliRenderer;
- import net.kjentytek303.additional_transfurs.client.renderer.LatexFoxRenderer;
-
+ /*PERL_RENDERER_IMPORTS*/
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,8 +15,6 @@ public class InitRenderers {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 
-		registerHumanoid(event, InitEntities.AVALI.get(), AvaliRenderer::new);
- 		registerHumanoid(event, InitEntities.LATEX_FOX.get(), LatexFoxRenderer::new);
-
+/*PERL_RENDERERS*/
 	}
 }
