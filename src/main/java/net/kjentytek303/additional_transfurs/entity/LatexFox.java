@@ -100,7 +100,7 @@ public class LatexFox extends ChangedEntity /*PERL_IMPLEMENTS*/
  		attributes.getInstance(ChangedAttributes.SNEAK_SPEED.get()).setBaseValue(1.5);
  		attributes.getInstance(ChangedAttributes.SPRINT_SPEED.get()).setBaseValue(1.25);
  		attributes.getInstance(ChangedAttributes.JUMP_STRENGTH.get()).setBaseValue(1.5);
- 		attributes.getInstance(ChangedAttributes.FALL_RESISTANCE.get()).setBaseValue(1.5);
+ 		attributes.getInstance(ChangedAttributes.FALL_RESISTANCE.get()).setBaseValue(2.5);
 
 	}
 	

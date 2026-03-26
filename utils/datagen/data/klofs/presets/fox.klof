@@ -8,5 +8,5 @@ ForgeMod.SWIM_SPEED.get():0.93
 ChangedAttributes.SNEAK_SPEED.get():1.5
 ChangedAttributes.SPRINT_SPEED.get():1.25
 ChangedAttributes.JUMP_STRENGTH.get():1.5
-ChangedAttributes.FALL_RESISTANCE.get():1.5
+ChangedAttributes.FALL_RESISTANCE.get():2.5
 ]
